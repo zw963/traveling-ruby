@@ -41,7 +41,9 @@ ARCHITECTURES.each do |arch|
 
   desc "Build the #{arch} Docker image"
   task "image:#{arch}" do
-    sh "docker build --force-rm -t phusion/traveling-ruby-builder-#{arch} -f image/Dockerfile-#{arch} image"
+    sh "docker build --force-rm" \
+      " -t phusion/traveling-ruby-builder-#{arch}:#{IMAGE_VERSION}" \
+      " -f image/Dockerfile-#{arch} image"
   end
 
 
