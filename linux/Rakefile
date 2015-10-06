@@ -75,11 +75,14 @@ ARCHITECTURES.each do |arch|
 
     # We use 'file' instead of 'directory' here so that packages are updated
     # whenever we update binaries.
-    file("output/#{ruby_version}-#{arch}/bin") do
+    file("output/#{ruby_version}-#{arch}/bin" => "cache/#{ruby_version}-#{arch}") do
       sh "mkdir -p output/#{ruby_version}-#{arch}"
       sh "./build-ruby -j #{CONCURRENCY} -i phusion/traveling-ruby-builder-#{arch}:#{IMAGE_VERSION}" \
-        " -r #{ruby_version} output/#{ruby_version}-#{arch}"
+        " -r #{ruby_version} -c cache/#{ruby_version}-#{arch}" \
+        " output/#{ruby_version}-#{arch}"
     end
+
+    directory("cache/#{ruby_version}-#{arch}")
 
 
     desc "Test Ruby #{ruby_version} #{arch}"
