@@ -16,7 +16,7 @@ if [[ "$ARCHITECTURE" = x86_64 ]]; then
 else
 	ARCHITECTURE_BITS=32
 fi
-export PATH=/trruntime/bin:$PATH
+export PATH=/tr_runtime/bin:$PATH
 
 
 ### Install base software
@@ -39,7 +39,7 @@ run create_user app "App" 1000
 ### libffi
 
 header "Installing libffi"
-LIBFFI_FILE=`echo /trruntime/lib*/libffi.so.6`
+LIBFFI_FILE=`echo /tr_runtime/lib*/libffi.so.6`
 if [[ ! -e "$LIBFFI_FILE" ]]; then
 	download_and_extract libffi-$FFI_VERSION.tar.gz \
 		libffi-$FFI_VERSION \
@@ -50,15 +50,15 @@ if [[ ! -e "$LIBFFI_FILE" ]]; then
 		export CFLAGS="$SHLIB_CFLAGS"
 		export CXXFLAGS="$SHLIB_CXXFLAGS"
 		export LDLAGS="$SHLIB_LDFLAGS"
-		run ./configure --prefix=/trruntime \
+		run ./configure --prefix=/tr_runtime \
 			--enable-shared --disable-static \
 			--enable-portable-binary
 		run make -j$MAKE_CONCURRENCY
 		run make install-strip
 		if [[ "$ARCHITECTURE" = x86_64 ]]; then
-			run strip --strip-debug /trruntime/lib64/libffi.so.6
+			run strip --strip-debug /tr_runtime/lib64/libffi.so.6
 		else
-			run strip --strip-debug /trruntime/lib/libffi.so.6
+			run strip --strip-debug /tr_runtime/lib/libffi.so.6
 		fi
 	)
 	if [[ "$?" != 0 ]]; then false; fi
@@ -72,14 +72,14 @@ fi
 ### MySQL
 
 header "Installing MySQL"
-if [[ ! -e /trruntime/lib/libmysqlclient.a ]]; then
+if [[ ! -e /tr_runtime/lib/libmysqlclient.a ]]; then
 	download_and_extract mysql-connector-c-$MYSQL_LIB_VERSION-src.tar.gz \
 		mysql-connector-c-$MYSQL_LIB_VERSION-src \
 		http://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-$MYSQL_LIB_VERSION-src.tar.gz
 
 	(
 		source /hbb_shlib/activate
-		run cmake -DCMAKE_INSTALL_PREFIX=/trruntime \
+		run cmake -DCMAKE_INSTALL_PREFIX=/tr_runtime \
 			-DCMAKE_C_FLAGS="$SHLIB_CFLAGS" \
 			-DCMAKE_CXX_FLAGS="$SHLIB_CXXFLAGS" \
 			-DCMAKE_LDFLAGS="$SHLIB_LDFLAGS" \
@@ -89,7 +89,7 @@ if [[ ! -e /trruntime/lib/libmysqlclient.a ]]; then
 		run make -C libmysql install
 		run make -C include install
 		run make -C scripts install
-		run sed -i "s|^ldflags=''|ldflags='-lstdc++'|"  /trruntime/bin/mysql_config
+		run sed -i "s|^ldflags=''|ldflags='-lstdc++'|"  /tr_runtime/bin/mysql_config
 	)
 	if [[ "$?" != 0 ]]; then false; fi
 
@@ -102,7 +102,7 @@ fi
 ### PostgreSQL
 
 header "Installing PostgreSQL"
-if [[ ! -e /trruntime/lib/libpq.a ]]; then
+if [[ ! -e /tr_runtime/lib/libpq.a ]]; then
 	download_and_extract postgresql-$POSTGRESQL_VERSION.tar.bz2 \
 		postgresql-$POSTGRESQL_VERSION \
 		http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-$POSTGRESQL_VERSION.tar.bz2
@@ -112,7 +112,7 @@ if [[ ! -e /trruntime/lib/libpq.a ]]; then
 		export CFLAGS="$SHLIB_CFLAGS"
 		export CXXFLAGS="$SHLIB_CXXFLAGS"
 		export LDLAGS="$SHLIB_LDFLAGS"
-		run ./configure --prefix=/trruntime
+		run ./configure --prefix=/tr_runtime
 		run make -j$MAKE_CONCURRENCY -C src/common
 		run make -j$MAKE_CONCURRENCY -C src/backend
 		run make -j$MAKE_CONCURRENCY -C src/interfaces/libpq
@@ -121,7 +121,7 @@ if [[ ! -e /trruntime/lib/libpq.a ]]; then
 		run make -C src/include install-strip
 		run make -j$MAKE_CONCURRENCY -C src/bin/pg_config
 		run make -C src/bin/pg_config install-strip
-		run rm /trruntime/lib/libpq.so*
+		run rm /tr_runtime/lib/libpq.so*
 	)
 	if [[ "$?" != 0 ]]; then false; fi
 
@@ -134,7 +134,7 @@ fi
 ### ICU
 
 header "Installing ICU"
-if [[ ! -e /trruntime/lib/libicudata.a ]]; then
+if [[ ! -e /tr_runtime/lib/libicudata.a ]]; then
 	download_and_extract icu4c-$ICU_DIR_VERSION-src.tgz \
 		icu/source \
 		http://download.icu-project.org/files/icu4c/$ICU_VERSION/icu4c-$ICU_DIR_VERSION-src.tgz
@@ -144,11 +144,11 @@ if [[ ! -e /trruntime/lib/libicudata.a ]]; then
 		export CFLAGS="$STATICLIB_CFLAGS -DU_CHARSET_IS_UTF8=1 -DU_USING_ICU_NAMESPACE=0"
 		export CXXFLAGS="$STATICLIB_CXXFLAGS -DU_CHARSET_IS_UTF8=1 -DU_USING_ICU_NAMESPACE=0"
 		unset LDFLAGS
-		run ./configure --prefix=/trruntime --disable-samples --disable-tests \
+		run ./configure --prefix=/tr_runtime --disable-samples --disable-tests \
 			--enable-static --disable-shared --with-library-bits=$ARCHITECTURE_BITS
 		run make -j$MAKE_CONCURRENCY VERBOSE=1
 		run make install -j$MAKE_CONCURRENCY
-		run strip --strip-debug /trruntime/lib/libicu*.a
+		run strip --strip-debug /tr_runtime/lib/libicu*.a
 	)
 	if [[ "$?" != 0 ]]; then false; fi
 
@@ -161,7 +161,7 @@ fi
 ### libssh2
 
 header "Installing libssh2"
-if [[ ! -e /trruntime/lib/libssh2.a ]]; then
+if [[ ! -e /tr_runtime/lib/libssh2.a ]]; then
 	download_and_extract libssh2-$LIBSSH2_VERSION.tar.gz \
 		libssh2-$LIBSSH2_VERSION \
 		http://www.libssh2.org/download/libssh2-$LIBSSH2_VERSION.tar.gz
@@ -171,7 +171,7 @@ if [[ ! -e /trruntime/lib/libssh2.a ]]; then
 		export CFLAGS="$STATICLIB_CFLAGS"
 		export CXXFLAGS="$STATICLIB_CXXFLAGS"
 		unset LDFLAGS
-		run ./configure --prefix=/trruntime --enable-static --disable-shared \
+		run ./configure --prefix=/tr_runtime --enable-static --disable-shared \
 			--with-openssl --with-libz --disable-examples-build --disable-debug
 		run make -j$CONCURRENCY
 		run make install-strip -j$CONCURRENCY
