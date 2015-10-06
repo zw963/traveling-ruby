@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 source /tr_build/functions.sh
-set -x
 
 FFI_VERSION=3.2.1
 MYSQL_LIB_VERSION=6.1.5
@@ -22,12 +21,16 @@ export PATH=/trruntime/bin:$PATH
 
 ### Install base software
 
+echo $ARCHITECTURE > /ARCHITECTURE
+
 # TODO: install s3cmd
 if [[ "$ARCHITECTURE" = x86_64 ]]; then
-	run rpm -Uvh https://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
+	run curl -OL --fail https://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 else
-	run rpm -Uvh https://dl.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
+	run curl -OL --fail https://dl.fedoraproject.org/pub/epel/5/i386/epel-release-5-4.noarch.rpm
 fi
+run rpm -Uvh epel-release-5-4.noarch.rpm
+run rm -f epel-release-5-4.noarch.rpm
 run yum install -y wget sudo s3cmd readline-devel ncurses-devel
 run mkdir -p /ccache
 run create_user app "App" 1000
@@ -71,7 +74,7 @@ fi
 header "Installing MySQL"
 if [[ ! -e /trruntime/lib/libmysqlclient.a ]]; then
 	download_and_extract mysql-connector-c-$MYSQL_LIB_VERSION-src.tar.gz \
-		mysql-connector-c-$MYSQL_LIB_VERSION-src
+		mysql-connector-c-$MYSQL_LIB_VERSION-src \
 		http://dev.mysql.com/get/Downloads/Connector-C/mysql-connector-c-$MYSQL_LIB_VERSION-src.tar.gz
 
 	(
@@ -101,7 +104,7 @@ fi
 header "Installing PostgreSQL"
 if [[ ! -e /trruntime/lib/libpq.a ]]; then
 	download_and_extract postgresql-$POSTGRESQL_VERSION.tar.bz2 \
-		postgresql-$POSTGRESQL_VERSION
+		postgresql-$POSTGRESQL_VERSION \
 		http://ftp.postgresql.org/pub/source/v9.3.5/postgresql-$POSTGRESQL_VERSION.tar.bz2
 
 	(
@@ -121,7 +124,7 @@ if [[ ! -e /trruntime/lib/libpq.a ]]; then
 		run rm /trruntime/lib/libpq.so*
 	)
 	if [[ "$?" != 0 ]]; then false; fi
-	
+
 	echo "Leaving source directory"
 	popd >/dev/null
 	run rm -rf postgresql-$POSTGRESQL_VERSION
