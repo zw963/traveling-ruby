@@ -23,7 +23,6 @@ export PATH=/tr_runtime/bin:$PATH
 
 echo $ARCHITECTURE > /ARCHITECTURE
 
-# TODO: install s3cmd
 if [[ "$ARCHITECTURE" = x86_64 ]]; then
 	run curl -OL --fail https://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noarch.rpm
 else
@@ -31,7 +30,8 @@ else
 fi
 run rpm -Uvh epel-release-5-4.noarch.rpm
 run rm -f epel-release-5-4.noarch.rpm
-run yum install -y wget sudo s3cmd readline-devel ncurses-devel
+run yum install -y wget sudo readline-devel ncurses-devel
+run pip install s3cmd
 run mkdir -p /ccache
 run create_user app "App" 1000
 
