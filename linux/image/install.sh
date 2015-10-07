@@ -31,7 +31,7 @@ fi
 run rpm -Uvh epel-release-5-4.noarch.rpm
 run rm -f epel-release-5-4.noarch.rpm
 run yum install -y wget sudo readline-devel ncurses-devel
-run pip install s3cmd
+run /hbb/bin/pip install s3cmd
 run mkdir -p /ccache
 run create_user app "App" 1000
 
