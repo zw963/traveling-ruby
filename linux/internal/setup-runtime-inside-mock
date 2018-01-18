@@ -54,7 +54,7 @@ for F in *; do
 	fi
 done
 run rpm --rebuilddb
-run yum install -y @development-tools gcc gcc-c++ wget sudo zlib-devel \
+run yum install -y @development-tools gcc gcc-c++ wget m4 sudo zlib-devel \
 	readline-devel ncurses-devel ccache
 run mkdir -p /ccache
 echo
