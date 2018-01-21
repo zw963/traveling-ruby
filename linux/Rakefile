@@ -10,7 +10,7 @@ task :package do
   # Do nothing
 end
 
-desc "Build the runtime"
+desc 'Build the runtime'
 task :runtime do
   # Do nothing
 end
@@ -25,19 +25,19 @@ task :test do
   # Do nothing
 end
 
-desc "Upload all packages to the server"
+desc 'Upload all packages to the server'
 task :upload do
   # Do nothing
 end
 
-desc "Clean all packages, but not the runtime"
+desc 'Clean all packages, but not the runtime'
 task :clean do
-  sh "rm -rf output"
+  sh 'rm -rf output'
 end
 
-desc "Clean everything, including the runtime"
-task "clean-all" => :clean do
-  sh "sudo rm -rf runtime"
+desc 'Clean everything, including the runtime'
+task 'clean-all' => :clean do
+  sh 'sudo rm -rf runtime'
 end
 
 ARCHITECTURES.each do |arch|
@@ -61,13 +61,11 @@ ARCHITECTURES.each do |arch|
     desc "Build binaries for Ruby #{ruby_version} #{arch}"
     task "build:#{ruby_version}:#{arch}" => "output/#{ruby_version}-#{arch}/bin"
 
-
-    file "runtime/#{ruby_version}-#{arch}/ok" => ["setup-runtime", "internal/setup-runtime", "internal/setup-runtime-inside-mock"] do
+    file "runtime/#{ruby_version}-#{arch}/ok" => ['setup-runtime', 'internal/setup-runtime', 'internal/setup-runtime-inside-mock'] do
       sh "mkdir -p runtime/#{ruby_version}-#{arch}"
       sh "./setup-runtime -a #{arch} -r #{ruby_version} runtime/#{ruby_version}-#{arch}"
       sh "touch runtime/#{ruby_version}-#{arch}/ok"
     end
-
 
     file(package => "output/#{ruby_version}-#{arch}/bin") do
       sh "./package -r #{package} output/#{ruby_version}-#{arch}"
@@ -84,7 +82,6 @@ ARCHITECTURES.each do |arch|
       sh "mkdir -p output/#{ruby_version}-#{arch}"
       sh "./build-ruby -j #{CONCURRENCY} -a #{arch} -r #{ruby_version} runtime/#{ruby_version}-#{arch} output/#{ruby_version}-#{arch}"
     end
-
 
     desc "Test Ruby #{ruby_version} #{arch}"
     task "test:#{ruby_version}:#{arch}" => "output/#{ruby_version}-#{arch}/bin" do
