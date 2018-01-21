@@ -1,6 +1,6 @@
-VERSION       = File.read("../VERSION.txt").strip
-RUBY_VERSIONS = File.read("../RUBY_VERSIONS.txt").strip.split(/\s+/)
-ARCHITECTURES = ["x86", "x86_64"]
+VERSION       = File.read('VERSION.txt').strip
+RUBY_VERSIONS = File.read('RUBY_VERSIONS.txt').strip.split(/\s+/)
+ARCHITECTURES = ['x86', 'x86_64'].freeze
 CONCURRENCY   = `./internal/cpucount`.to_i
 
 task :default => :package
