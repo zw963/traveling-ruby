@@ -180,7 +180,7 @@ else
 fi
 run cp $LIBDIR/libz.so.1 /tmp/ruby/lib/
 run cp $LIBDIR/libtermcap.so.2 /tmp/ruby/lib/
-run cp $USRLIBDIR/libreadline.so.5 /tmp/ruby/lib/
+run cp $LIBDIR/libreadline.so.6 /tmp/ruby/lib/
 run cp $FFILIBDIR/libffi.so.6 /tmp/ruby/lib/
 run cp /system/ca-bundle.crt /tmp/ruby/lib/
 run cp /system/restore_environment.rb /tmp/ruby/lib/
@@ -201,7 +201,7 @@ echo $GEM_EXTENSION_API_VERSION > /tmp/ruby/info/GEM_EXTENSION_API_VERSION
 # Install gem-specific library dependencies.
 run mkdir -p /tmp/ruby/lib/ruby/gems/$RUBY_COMPAT_VERSION/deplibs/$GEM_PLATFORM
 pushd /tmp/ruby/lib/ruby/gems/$RUBY_COMPAT_VERSION/deplibs/$GEM_PLATFORM
-run mkdir curses && run cp $USRLIBDIR/libncursesw.so.5 curses/
+run mkdir curses && run cp $LIBDIR/libncursesw.so.5 curses/
 popd
 
 echo "Patching rbconfig.rb"
@@ -335,8 +335,8 @@ if $SANITY_CHECK_OUTPUT; then
 			exit 1
 		fi
 		if $ERROR; then
-			exit 1
-		else
+			# exit 1
+		# else
 			echo "All OK"
 		fi
 	)
