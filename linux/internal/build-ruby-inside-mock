@@ -260,14 +260,15 @@ export BUNDLE_BUILD__EVENTMACHINE=--with-ldflags="'$DEFAULT_LDFLAGS -lz'"
 if [[ "$DEBUG_SHELL" = before ]]; then
 	open_debug_shell
 fi
-if [[ -e /system/gemfiles ]]; then
-	run /tmp/ruby/bin/gem install bundler -v $BUNDLER_VERSION --no-rdoc --no-ri
-	if [[ "$DEBUG_SHELL" = after ]]; then
-		install_gems || true
-	else
-		install_gems
-	fi
-fi
+run /tmp/ruby/bin/gem install bundler -v $BUNDLER_VERSION --no-rdoc --no-ri
+# if [[ -e /system/gemfiles ]]; then
+#
+# 	if [[ "$DEBUG_SHELL" = after ]]; then
+# 		install_gems || true
+# 	else
+# 		install_gems
+# 	fi
+# fi
 if [[ "$DEBUG_SHELL" = after ]]; then
 	open_debug_shell
 fi
@@ -334,11 +335,11 @@ if $SANITY_CHECK_OUTPUT; then
 		if [[ $? != 0 ]]; then
 			exit 1
 		fi
-		if $ERROR; then
-			# exit 1
+		# if $ERROR; then
+		# 	exit 1
 		# else
-			echo "All OK"
-		fi
+		# 	echo "All OK"
+		# fi
 	)
 	if [[ $? != 0 ]]; then
 		exit 1

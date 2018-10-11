@@ -2,18 +2,18 @@
 set -e
 
 SELFDIR=`dirname "$0"`
-SELFDIR=`cd "$SELFDIR" && pwd`
-source "$SELFDIR/../shared/library.sh"
+SELFDIR=`cd "$SELFDIR" &>/dev/null && pwd`
+source "$SELFDIR/shared/library.sh"
 
 CPUCOUNT=`"$SELFDIR/internal/cpucount"`
-RUBY_VERSIONS=(`cat "$SELFDIR/../RUBY_VERSIONS.txt"`)
+RUBY_VERSIONS=(`cat "$SELFDIR/RUBY_VERSIONS.txt"`)
 
 RUNTIME_DIR=
 OUTPUT_DIR=
 ARCHITECTURE=
 RUBY_VERSION=${RUBY_VERSIONS[0]}
 CONCURRENCY=$CPUCOUNT
-GEMFILE="$SELFDIR/../shared/gemfiles"
+GEMFILE="$SELFDIR/shared/gemfiles"
 DEBUG_SHELL=none
 SETUP_SOURCE=true
 COMPILE=true
@@ -108,8 +108,9 @@ function parse_options()
 
 
 parse_options "$@"
-RUNTIME_DIR=`cd "$RUNTIME_DIR" && pwd`
-OUTPUT_DIR=`cd "$OUTPUT_DIR" && pwd`
+RUNTIME_DIR=`cd "$RUNTIME_DIR" &>/dev/null && pwd`
+OUTPUT_DIR=`cd "$OUTPUT_DIR" &>/dev/null && pwd`
+
 if [[ ! -e "$RUNTIME_DIR/mock" ]]; then
 	echo "ERROR: runtime directory $RUNTIME_DIR not set up. Please run ./setup-runtime first."
 	exit 1
@@ -141,15 +142,16 @@ fi
 exec docker run \
 	$TTY_ARGS \
 	--rm \
-	--cap-add SYS_ADMIN --cap-add SYS_CHROOT \
+	--cap-add SYS_ADMIN \
+        --cap-add SYS_CHROOT \
 	-v "$SELFDIR/internal:/system:ro" \
-	-v "$SELFDIR/../shared:/system_shared:ro" \
+	-v "$SELFDIR/shared:/system_shared:ro" \
 	-v "$RUNTIME_DIR/mock:/var/lib/mock" \
 	-v "$OUTPUT_DIR:/output" \
 	"${GEMFILE_MOUNT[@]}" \
 	-e "APP_UID=`id -u`" \
 	-e "APP_GID=`id -g`" \
-	-e "BUNDLER_VERSION=`cat \"$SELFDIR/../BUNDLER_VERSION.txt\"`" \
+	-e "BUNDLER_VERSION=`cat \"$SELFDIR/BUNDLER_VERSION.txt\"`" \
 	-e "ARCHITECTURE=$ARCHITECTURE" \
 	-e "RUBY_VERSION=$RUBY_VERSION" \
 	-e "CONCURRENCY=$CONCURRENCY" \
@@ -158,5 +160,4 @@ exec docker run \
 	-e "SANITY_CHECK_OUTPUT=$SANITY_CHECK_OUTPUT" \
 	-e "DEBUG_SHELL=$DEBUG_SHELL" \
 	phusion/traveling-ruby-builder \
-	/system/my_init --quiet --skip-runit --skip-startup-files -- \
-	/system/build-ruby
+	/system/my_init --quiet --skip-runit --skip-startup-files -- /system/build-ruby

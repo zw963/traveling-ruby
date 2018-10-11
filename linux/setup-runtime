@@ -2,8 +2,8 @@
 set -e
 
 SELFDIR=`dirname "$0"`
-SELFDIR=`cd "$SELFDIR" && pwd`
-source "$SELFDIR/../shared/library.sh"
+SELFDIR=`cd "$SELFDIR" &>/dev/null && pwd`
+source "$SELFDIR/shared/library.sh"
 
 RUNTIME_DIR=
 ARCHITECTURE=
@@ -75,7 +75,7 @@ function parse_options()
 
 
 parse_options "$@"
-RUNTIME_DIR=`cd "$RUNTIME_DIR" && pwd`
+RUNTIME_DIR=`cd "$RUNTIME_DIR" &>/dev/null && pwd`
 
 header "Preparing"
 run mkdir -p "$RUNTIME_DIR/mock"
@@ -84,7 +84,7 @@ exec docker run \
 	--rm \
 	--privileged \
 	-v "$SELFDIR/internal:/system:ro" \
-	-v "$SELFDIR/../shared:/system_shared:ro" \
+	-v "$SELFDIR/shared:/system_shared:ro" \
 	-v "$RUNTIME_DIR/mock:/var/lib/mock" \
 	-e "ARCHITECTURE=$ARCHITECTURE" \
 	-e "RUBY_VERSION=$RUBY_VERSION" \

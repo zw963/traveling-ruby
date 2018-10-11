@@ -62,9 +62,10 @@ ARCHITECTURES.each do |arch|
     task "build:#{ruby_version}:#{arch}" => "output/#{ruby_version}-#{arch}/bin"
 
     file "runtime/#{ruby_version}-#{arch}/ok" => ['setup-runtime', 'internal/setup-runtime', 'internal/setup-runtime-inside-mock'] do
-      sh "mkdir -p runtime/#{ruby_version}-#{arch}"
+      # 这是 build task 的真正入口．
+      mkdir_p "runtime/#{ruby_version}-#{arch}"
       sh "./setup-runtime -a #{arch} -r #{ruby_version} runtime/#{ruby_version}-#{arch}"
-      sh "touch runtime/#{ruby_version}-#{arch}/ok"
+      touch "runtime/#{ruby_version}-#{arch}/ok"
     end
 
     file(package => "output/#{ruby_version}-#{arch}/bin") do
@@ -79,7 +80,7 @@ ARCHITECTURES.each do |arch|
     # We use 'file' instead of 'directory' here so that packages are updated
     # whenever we update binaries.
     file("output/#{ruby_version}-#{arch}/bin" => "runtime/#{ruby_version}-#{arch}/ok") do
-      sh "mkdir -p output/#{ruby_version}-#{arch}"
+      mkdir_p "output/#{ruby_version}-#{arch}"
       sh "./build-ruby -j #{CONCURRENCY} -a #{arch} -r #{ruby_version} runtime/#{ruby_version}-#{arch} output/#{ruby_version}-#{arch}"
     end
 

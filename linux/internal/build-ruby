@@ -34,7 +34,6 @@ echo "Entering mock chroot"
 run /system/setuser app /usr/bin/mock \
 	-r $CHROOT_NAME \
 	--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
-	--quiet \
 	--shell \
 	/system/build-ruby-inside-mock
 echo "Left mock chroot"
