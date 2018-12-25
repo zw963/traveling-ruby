@@ -160,4 +160,5 @@ exec docker run \
 	-e "SANITY_CHECK_OUTPUT=$SANITY_CHECK_OUTPUT" \
 	-e "DEBUG_SHELL=$DEBUG_SHELL" \
 	phusion/traveling-ruby-builder \
-	/system/my_init --quiet --skip-runit --skip-startup-files -- /system/build-ruby
+	/system/my_init --quiet --skip-runit --skip-startup-files -- \
+        /system/build-ruby
