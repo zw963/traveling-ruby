@@ -37,3 +37,7 @@ $: rake build:2.5.3:x86_64
 4. If you build image failed, it maybe because your kernel not compatible with docker(18.03.1-ce), try use LTS version kernel, current working version is: 4.14.90
 5. I use this build since 11 months before (2018-01), it seem like work well for my personal usage (so many ruby tools which need a portable ruby release)
 6. As changed in 76c157b, we need add `-std=gnu99` to let make work, for other environment, maybe can try with `-std=c99`
+
+## Others
+
+If you don't want build yourself with docker, you can download precompiled version [2.6.0-x86_64](https://zw963.github.io/files/2.6.0-x86_64.tar.gz), [2.6.0-x86](https://zw963.github.io/files/2.6.0-x86.tar.gz)
