@@ -1,7 +1,6 @@
 This is a fork for origin [traveling-ruby](https://github.com/phusion/traveling-ruby), origin README please see [here](https://github.com/zw963/traveling-ruby/blob/updated_linux_branch/README.md)
 
-This is not a completed fork about old project, and current, only `linux/linux64` is supported. But if you build new `phusion/traveling-ruby-builder` image
-as described in follow step 2, have chance `osx` can work too. (not tested myself)
+This is not a completed fork about old project, and current, only `linux/linux64` is supported.
 
 ## Way of the Traveling Ruby
 
