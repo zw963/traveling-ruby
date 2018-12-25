@@ -154,7 +154,7 @@ if $COMPILE; then
 	run sed -i 's|dir_config("openssl")|$libs << " -lz "; dir_config("openssl")|' ext/openssl/extconf.rb
 	# Do not link to ncurses. We want it to link to libtermcap instead, which is much smaller.
 	run sed -i '/ncurses/d' ext/readline/extconf.rb
-	run make -j$CONCURRENCY Q= V=1 exts.mk
+	run make -j$CONCURRENCY Q= V=1 CFLAGS=-std=gnu99 exts.mk
 	run make -j$CONCURRENCY Q= V=1
 	echo
 fi
@@ -260,7 +260,7 @@ export BUNDLE_BUILD__EVENTMACHINE=--with-ldflags="'$DEFAULT_LDFLAGS -lz'"
 if [[ "$DEBUG_SHELL" = before ]]; then
 	open_debug_shell
 fi
-run /tmp/ruby/bin/gem install bundler -v $BUNDLER_VERSION --no-rdoc --no-ri
+run /tmp/ruby/bin/gem install bundler -v $BUNDLER_VERSION --no-document
 # if [[ -e /system/gemfiles ]]; then
 #
 # 	if [[ "$DEBUG_SHELL" = after ]]; then
