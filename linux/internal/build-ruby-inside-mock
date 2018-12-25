@@ -321,6 +321,7 @@ if $SANITY_CHECK_OUTPUT; then
 	(
 		SYSTEM_LIBRARIES="(linux-gate|linux-vdso|libpthread|librt|libdl|libcrypt|libm|libc"
 		SYSTEM_LIBRARIES="$SYSTEM_LIBRARIES|ld-linux.*|libutil|libnsl|libgcc_s|libstdc\+\+"
+		SYSTEM_LIBRARIES="$SYSTEM_LIBRARIES|libtinfo.*|"
 		SYSTEM_LIBRARIES="$SYSTEM_LIBRARIES|libz|libtermcap|libreadline|libncursesw|libffi)\.so"
 		ERROR=false
 		set -o pipefail
@@ -335,11 +336,11 @@ if $SANITY_CHECK_OUTPUT; then
 		if [[ $? != 0 ]]; then
 			exit 1
 		fi
-		# if $ERROR; then
-		# 	exit 1
-		# else
-		# 	echo "All OK"
-		# fi
+		if $ERROR; then
+			exit 1
+		else
+			echo "All OK"
+		fi
 	)
 	if [[ $? != 0 ]]; then
 		exit 1
