@@ -1,4 +1,4 @@
-This is a fork for origin [traveling-ruby](https://github.com/phusion/traveling-ruby), origin README please see [here](https://github.com/zw963/traveling-ruby/blob/updated_linux_branch/README.md)
+This is a fork for origin [traveling-ruby](https://github.com/phusion/traveling-ruby), origin README.md please see [here](https://github.com/zw963/traveling-ruby/blob/updated_linux_branch/ORIGIN_README.md)
 
 This is not a completed fork about old project, and current, only `linux/linux64` is supported.
 
