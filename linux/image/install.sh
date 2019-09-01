@@ -22,8 +22,6 @@ function create_group()
 	fi
 }
 
-set -x
-
 cd /tmp
 rpm -Uvh http://mirror.overthewire.com.au/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 yum update -y
