@@ -1,7 +1,7 @@
 This is a fork for origin [traveling-ruby](https://github.com/phusion/traveling-ruby), origin README.md please see [here](https://github.com/zw963/traveling-ruby/blob/updated_linux_branch/ORIGIN_README.md)
 
-This is not a completed fork about old project, and current, only `linux/linux64` is supported,
-and only partial external library is supported, So, you can think it as a just working version traveling ruby.
+This is not a completed fork of old project, and current, only `linux/linux64` is supported,
+and only partial external library is supported, So, you can think it as a just working version pure traveling ruby.
 
 But, anyway, it still is a traveling ruby!
 
