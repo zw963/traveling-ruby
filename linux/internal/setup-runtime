@@ -1,4 +1,4 @@
-#!/bin/bash
+db#!/bin/bash
 set -e
 source /system_shared/library.sh
 
@@ -30,25 +30,25 @@ run /system/setuser app /usr/bin/mock \
 	--install yum
 echo
 
-header "Fixing RPM database"
-# CentOS 6's RPM generates database files which CentOS 5's RPM
-# cannot read, so we fix this. See
-# http://forums.fedoraforum.org/showthread.php?t=222988
-echo "+ Entering /var/lib/mock/$MOCK_NAME/root/var/lib/rpm"
-pushd /var/lib/mock/$MOCK_NAME/root/var/lib/rpm >/dev/null
-run rm -fv __db*
-for F in $(list_db_files *); do
-	echo "Fixing $F"
-	echo "+ db_dump $F > $F.dump"
-	db_dump $F > $F.dump
-	run rm $F
-	echo "+ db43_load $F < $F.dump"
-	db43_load $F < $F.dump
-	run rm $F.dump
-done
-echo "+ Leaving RPM database directory"
-popd >/dev/null
-echo
+# header "Fixing RPM database"
+# # CentOS 6's RPM generates database files which CentOS 5's RPM
+# # cannot read, so we fix this. See
+# # http://forums.fedoraforum.org/showthread.php?t=222988
+# echo "+ Entering /var/lib/mock/$MOCK_NAME/root/var/lib/rpm"
+# pushd /var/lib/mock/$MOCK_NAME/root/var/lib/rpm >/dev/null
+# run rm -fv __db*
+# for F in $(list_db_files *); do
+# 	echo "Fixing $F"
+# 	echo "+ db_dump $F > $F.dump"
+# 	db_dump $F > $F.dump
+# 	run rm $F
+# 	echo "+ db43_load $F < $F.dump"
+# 	db43_load $F < $F.dump
+# 	run rm $F.dump
+# done
+# echo "+ Leaving RPM database directory"
+# popd >/dev/null
+# echo
 
 header "Installing additional software inside chroot"
 run rm -rf /var/lib/mock/$MOCK_NAME/root/system
