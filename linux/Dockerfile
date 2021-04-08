@@ -1,3 +1,3 @@
 FROM centos:7
 ADD image /image
-RUN /image/install.sh
+RUN sh -x /image/install.sh
