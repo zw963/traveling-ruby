@@ -23,7 +23,7 @@ function create_group()
 }
 
 cd /tmp
-rpm -Uvh /image/epel-release-6-8.noarch.rpm
+rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 yum update -y
 yum install -y --skip-broken --enablerepo centosplus \
 	centos-release-SCL file db4-utils compat-db43 mock wget s3cmd
