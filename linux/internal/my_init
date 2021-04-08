@@ -1,4 +1,4 @@
-#!/system/python27 -u
+#!/system/python -u
 import os, os.path, sys, stat, signal, errno, argparse, time, json, re
 
 KILL_PROCESS_TIMEOUT = 5
@@ -261,7 +261,7 @@ def main(args):
 
 	if not args.skip_startup_files:
 		run_startup_files()
-	
+
 	runit_exited = False
 	exit_code = None
 

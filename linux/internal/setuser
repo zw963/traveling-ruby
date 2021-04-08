@@ -1,4 +1,4 @@
-#!/system/python27 -u
+#!/system/python -u
 import sys, os, pwd
 
 if len(sys.argv) < 3:
