@@ -10,7 +10,7 @@ function list_db_files()
 if [[ "$ARCHITECTURE" = x86 ]]; then
 	CHROOT_NAME=epel-6-i386
 else
-	CHROOT_NAME=epel-6-x86_64
+	CHROOT_NAME=epel-7-x86_64
 fi
 MOCK_NAME="$CHROOT_NAME-$RUBY_VERSION-$ARCHITECTURE"
 run chown root:mock /var/lib/mock
