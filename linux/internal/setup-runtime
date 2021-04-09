@@ -19,6 +19,7 @@ echo
 
 header "Setting up chroot"
 if $INITIALIZE; then
+    # 这一步，其实是在 /var/cache/mock/ 下面新建一个 $CHROOT_NAME(epel-7-x86_64) 文件夹。
 	run /system/setuser app /usr/bin/mock \
 		-r $CHROOT_NAME \
 		--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
