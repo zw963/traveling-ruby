@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 source /system_shared/library.sh
 
 function list_db_files()
