@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 source /system_shared/library.sh
 
 function list_db_files()
@@ -25,10 +25,7 @@ if $INITIALIZE; then
 		--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
 		--init
 fi
-run /system/setuser app /usr/bin/mock \
-	-r $CHROOT_NAME \
-	--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
-	--install yum
+run /system/setuser app /usr/bin/mock  -r $CHROOT_NAME  --uniqueext "$RUBY_VERSION-$ARCHITECTURE"  --install yum
 echo
 
 # header "Fixing RPM database"
@@ -57,11 +54,7 @@ run mkdir /var/lib/mock/$MOCK_NAME/root/system
 run cp -R /system/* /var/lib/mock/$MOCK_NAME/root/system/
 run cp -R /system_shared/* /var/lib/mock/$MOCK_NAME/root/system/
 echo $ARCHITECTURE > /var/lib/mock/$MOCK_NAME/root/system/ARCHITECTURE
-run /system/setuser app /usr/bin/mock \
-	-r $CHROOT_NAME \
-	--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
-	--shell \
-	/system/setup-runtime-inside-mock
+run /system/setuser app /usr/bin/mock  -r $CHROOT_NAME  --uniqueext "$RUBY_VERSION-$ARCHITECTURE"  --shell /system/setup-runtime-inside-mock
 run rm -rf /var/lib/mock/$MOCK_NAME/root/system
 echo "----- chroot left -----"
 echo

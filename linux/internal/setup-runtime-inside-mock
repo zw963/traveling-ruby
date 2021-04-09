@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
-source /system_shared/library.sh
+echo 'nameserver 8.8.4.4' | tee -a /etc/resolv.conf
+source /system/library.sh
 ARCHITECTURE=`cat /system/ARCHITECTURE`
 
 function download_and_extract()
@@ -56,7 +57,7 @@ done
 run rpm --rebuilddb
 run yum install -y @development-tools gcc gcc-c++ wget m4 sudo zlib-devel \
     readline-devel ncurses-devel ccache compat-libtermcap \
-    autoconf automake libtool
+    autoconf automake libtool openssl
 run mkdir -p /ccache
 echo
 
@@ -77,8 +78,8 @@ echo
 # fi
 # echo
 
-header "Installing OpenSSL"
-yum install -y openssl
+# header "Installing OpenSSL"
+# yum install -y openssl
 # if [[ ! -e /usr/local/override/bin/openssl ]]; then
 # 	download_and_extract openssl-$OPENSSL_VERSION.tar.gz \
 # 		https://www.openssl.org/source/openssl-$OPENSSL_VERSION.tar.gz
