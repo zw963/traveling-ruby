@@ -1,4 +1,4 @@
-#!/system/python -u
+#!/usr/bin/env python -u
 import sys, os, pwd
 
 if len(sys.argv) < 3:
