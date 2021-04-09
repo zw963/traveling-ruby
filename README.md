@@ -41,3 +41,7 @@ $: rake build:2.5.3:x86_64
 ## Others
 
 If you don't want build yourself with docker, you can download precompiled version [2.6.0-x86_64](https://zw963.github.io/files/2.6.0-x86_64.tar.gz), [2.6.0-x86](https://zw963.github.io/files/2.6.0-x86.tar.gz)
+
+### Why i maintain a forked x86_64 linux version traveling ruby?
+
+It's for my own [ruby_tools](https://github.com/zw963/ruby_tools) project, maybe you are interested.
