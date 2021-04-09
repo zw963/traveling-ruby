@@ -13,7 +13,7 @@ function download_and_extract()
 	run rm -f "$BASENAME"
 	run wget -O "$BASENAME" "$URL"
 	if [[ "$URL" =~ $regex ]]; then
-		run tar xjf "$BASENAME"
+	    run tar xjf "$BASENAME"
 	else
 		run tar xzf "$BASENAME"
 	fi
@@ -57,7 +57,7 @@ done
 run rpm --rebuilddb
 run yum install -y @development-tools gcc gcc-c++ wget m4 sudo zlib-devel \
     readline-devel ncurses-devel ccache compat-libtermcap \
-    autoconf automake libtool openssl
+    autoconf automake libtool openssl-devel
 run mkdir -p /ccache
 echo
 
