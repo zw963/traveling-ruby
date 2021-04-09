@@ -2,15 +2,10 @@
 set -e
 source /system_shared/library.sh
 
-function list_db_files()
-{
-	file "$@" | grep 'Berkeley DB' | grep 'version 9' | awk '{ print $1 }' | sed 's/:$//'
-}
-
 if [[ "$ARCHITECTURE" = x86 ]]; then
-	CHROOT_NAME=epel-6-i386
+	CHROOT_NAME=epel-7-i386
 else
-	CHROOT_NAME=epel-6-x86_64
+	CHROOT_NAME=epel-7-x86_64
 fi
 MOCK_NAME="$CHROOT_NAME-$RUBY_VERSION-$ARCHITECTURE"
 run chown root:mock /var/lib/mock
@@ -19,35 +14,13 @@ echo
 
 header "Setting up chroot"
 if $INITIALIZE; then
+    # 这一步，其实是在 /var/cache/mock/ 下面新建一个 $CHROOT_NAME(epel-7-x86_64) 文件夹。
 	run /system/setuser app /usr/bin/mock \
 		-r $CHROOT_NAME \
 		--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
 		--init
 fi
-run /system/setuser app /usr/bin/mock \
-	-r $CHROOT_NAME \
-	--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
-	--install yum
-echo
-
-header "Fixing RPM database"
-# CentOS 6's RPM generates database files which CentOS 5's RPM
-# cannot read, so we fix this. See
-# http://forums.fedoraforum.org/showthread.php?t=222988
-echo "+ Entering /var/lib/mock/$MOCK_NAME/root/var/lib/rpm"
-pushd /var/lib/mock/$MOCK_NAME/root/var/lib/rpm >/dev/null
-run rm -fv __db*
-for F in $(list_db_files *); do
-	echo "Fixing $F"
-	echo "+ db_dump $F > $F.dump"
-	db_dump $F > $F.dump
-	run rm $F
-	echo "+ db43_load $F < $F.dump"
-	db43_load $F < $F.dump
-	run rm $F.dump
-done
-echo "+ Leaving RPM database directory"
-popd >/dev/null
+run /system/setuser app /usr/bin/mock  -r $CHROOT_NAME  --uniqueext "$RUBY_VERSION-$ARCHITECTURE"  --install yum
 echo
 
 header "Installing additional software inside chroot"
@@ -56,11 +29,7 @@ run mkdir /var/lib/mock/$MOCK_NAME/root/system
 run cp -R /system/* /var/lib/mock/$MOCK_NAME/root/system/
 run cp -R /system_shared/* /var/lib/mock/$MOCK_NAME/root/system/
 echo $ARCHITECTURE > /var/lib/mock/$MOCK_NAME/root/system/ARCHITECTURE
-run /system/setuser app /usr/bin/mock \
-	-r $CHROOT_NAME \
-	--uniqueext "$RUBY_VERSION-$ARCHITECTURE" \
-	--shell \
-	/system/setup-runtime-inside-mock
+run /system/setuser app /usr/bin/mock  -r $CHROOT_NAME  --uniqueext "$RUBY_VERSION-$ARCHITECTURE"  --shell /system/setup-runtime-inside-mock
 run rm -rf /var/lib/mock/$MOCK_NAME/root/system
 echo "----- chroot left -----"
 echo
