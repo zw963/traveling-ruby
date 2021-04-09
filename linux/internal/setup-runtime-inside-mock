@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-source /system/library.sh
+source /system_shared/library.sh
 ARCHITECTURE=`cat /system/ARCHITECTURE`
 
 function download_and_extract()
